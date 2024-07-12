@@ -9,7 +9,9 @@ def add_processo(processos, quantum, sobrecarga):
     processo = {
         "tempo_de_chegada": int(tempo_de_chegada),
         "tempo_de_execucao": int(tempo_de_execucao),
-        "deadline": int(deadline)
+        "deadline": int(deadline),
+        "inicio": [],
+        "final": []
     }
 
     processos.append(processo)
