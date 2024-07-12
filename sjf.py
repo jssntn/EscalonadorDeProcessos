@@ -7,7 +7,7 @@ def sjf(processos, quantum, sobrecarga):
         print("É necessário adicionar ao menos um processo para iniciar a simulação")
         return menu.main_menu(processos, quantum, sobrecarga)
     else:
-        processos = sorted(processos, key=itemgetter('execucao'))
+        processos = sorted(processos, key=itemgetter('tempo_de_chegada'))
         output_size = len(str(len(processos)))
         tempo_de_espera = 0
         for index, processo in enumerate(processos):
