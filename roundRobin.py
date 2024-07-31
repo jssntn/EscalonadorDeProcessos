@@ -1,6 +1,7 @@
 import menu
 import copy
 from operator import itemgetter
+from layout_escalonamento import escalonador_layout
 
 
 def round_robin(processos_raw, quantum, sobrecarga):
@@ -43,26 +44,31 @@ def round_robin(processos_raw, quantum, sobrecarga):
 
 
 
-        print("---------------------- INICIO ROUND ROBIN ----------------------")
-
+        # print("---------------------- INICIO ROUND ROBIN ----------------------")
+        layout = []
         for index, processo in enumerate(processos_raw):
-            print(f"proc {index} " + (' ' * (output_size - len(str(index)))), end='')
-
+            # print(f"proc {index} " + (' ' * (output_size - len(str(index)))), end='')
+            layout.append("")
             for i, inicio in enumerate(processo['inicio']):
 
                 if i == 0:
-                    print("□" * inicio, end='')
+                    layout[index] += "□" * inicio
+                    # print("□" * inicio, end='')
 
                 else:
-                    print("□" * (inicio - processo['final'][i - 1]), end='')
+                    layout[index] += "□" * (inicio - processo['final'][i - 1])
+                    # print("□" * (inicio - processo['final'][i - 1]), end='')
 
                 if inicio != processo['inicio'][-1]:
-                    print("■" * (processo['final'][i] - inicio - sobrecarga), end='')
-                    print("◪" * sobrecarga, end='')
+                    layout[index] += "■" * (processo['final'][i] - inicio - sobrecarga)
+                    layout[index] += "◪" * sobrecarga
+                    # print("■" * (processo['final'][i] - inicio - sobrecarga), end='')
+                    # print("◪" * sobrecarga, end='')
                 else:
-                    print("■" * (processo['final'][i] - inicio), end='')
-            print("\n")
-
+                    layout[index] += "■" * (processo['final'][i] - inicio)
+                    # print("■" * (processo['final'][i] - inicio), end='')
+            # print("\n")
+        escalonador_layout("Escalonador de Processos", layout)
         return menu.main_menu(processos, quantum, sobrecarga)
 
 
