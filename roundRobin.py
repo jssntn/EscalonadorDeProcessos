@@ -4,6 +4,7 @@ from operator import itemgetter
 from layout_escalonamento import escalonador_layout
 
 
+
 def round_robin(processos_raw, quantum, sobrecarga):
     if processos_raw == 0:
         print("É necessário adicionar ao menos um processo para iniciar a simulação")
@@ -67,9 +68,13 @@ def round_robin(processos_raw, quantum, sobrecarga):
                 else:
                     layout[index] += "■" * (processo['final'][i] - inicio)
                     # print("■" * (processo['final'][i] - inicio), end='')
-            # print("\n")
+            processo['inicio'] = []
+            processo['final'] = []
+
         escalonador_layout("Escalonador de Processos", layout)
-        return menu.main_menu(processos, quantum, sobrecarga)
+        return menu.main_menu(processos_raw, quantum, sobrecarga)
+
+
 
 
 
