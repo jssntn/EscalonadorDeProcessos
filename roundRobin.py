@@ -43,35 +43,28 @@ def round_robin(processos_raw, quantum, sobrecarga):
                         if processos_local[index]['tempo_de_execucao'] != 0:
                             is_ready = False
 
-
-
-        # print("---------------------- INICIO ROUND ROBIN ----------------------")
         layout = []
         for index, processo in enumerate(processos_raw):
-            # print(f"proc {index} " + (' ' * (output_size - len(str(index)))), end='')
             layout.append("")
             for i, inicio in enumerate(processo['inicio']):
-
+                if index == 0 and i == 0:
+                    layout[index] += "◫" * processo['tempo_de_chegada']
                 if i == 0:
                     layout[index] += "□" * inicio
-                    # print("□" * inicio, end='')
 
                 else:
                     layout[index] += "□" * (inicio - processo['final'][i - 1])
-                    # print("□" * (inicio - processo['final'][i - 1]), end='')
 
                 if inicio != processo['inicio'][-1]:
                     layout[index] += "■" * (processo['final'][i] - inicio - sobrecarga)
                     layout[index] += "◪" * sobrecarga
-                    # print("■" * (processo['final'][i] - inicio - sobrecarga), end='')
-                    # print("◪" * sobrecarga, end='')
                 else:
                     layout[index] += "■" * (processo['final'][i] - inicio)
                     # print("■" * (processo['final'][i] - inicio), end='')
             processo['inicio'] = []
             processo['final'] = []
 
-        escalonador_layout("Escalonador de Processos", layout)
+        escalonador_layout("Escalonador de Processos", layout, processos_raw, quantum, sobrecarga)
         return menu.main_menu(processos_raw, quantum, sobrecarga)
 
 

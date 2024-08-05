@@ -2,9 +2,10 @@ from rich.console import Console
 from rich.layout import Layout
 from rich.panel import Panel
 from rich.table import Table
+import menu
 
 
-def escalonador_layout(title, processos):
+def escalonador_layout(title, processos, process, quantum, sobrecarga):
     console = Console()
     layout = Layout()
 
@@ -14,12 +15,17 @@ def escalonador_layout(title, processos):
     )
     layout['body'].split(
         Layout(name='main', ratio=1),
-        Layout(name='legenda', ratio=1),
+        Layout(name='legenda')
     )
+
     table = Table(show_header=False, expand=True)
+    legenda = Table(show_header=False)
+    legenda.add_column(justify='center')
     table.add_column("process_id", justify="center")
     table.add_column("escalonamento", justify="left", overflow='fold')
 
+    legenda.add_row(
+            'Processando: ■ \nEm espera: □\nSobrecarga: ◪')
     for index, processo in enumerate(processos):
         table.add_row("proc " + str(index), processo)
 
@@ -29,14 +35,10 @@ def escalonador_layout(title, processos):
             renderable=table
            )
     )
-    layout['body']['legenda'].update(
-        Panel(
-            title='Legenda',
-            renderable='Processando: ■ \nEm espera: □\nSobrecarga: ◪',
-            border_style="red"
-        )
-    )
-    console.print(layout)
+
+    console.print(layout['body']['main'])
+    console.print(legenda, justify='center')
+
 
 
 
