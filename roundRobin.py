@@ -2,6 +2,7 @@ import menu
 import copy
 from operator import itemgetter
 from layout_escalonamento import escalonador_layout
+from live_layout import generate_layout
 
 
 
@@ -16,7 +17,7 @@ def round_robin(processos_raw, quantum, sobrecarga):
         output_size = len(str(len(processos)))
 
         is_processing = True
-        time_counter = 0
+        time_counter = processos[0]['tempo_de_chegada']-1
 
         while is_processing:
             is_processing = False
@@ -47,10 +48,9 @@ def round_robin(processos_raw, quantum, sobrecarga):
         for index, processo in enumerate(processos_raw):
             layout.append("")
             for i, inicio in enumerate(processo['inicio']):
-                if index == 0 and i == 0:
-                    layout[index] += "◫" * processo['tempo_de_chegada']
                 if i == 0:
-                    layout[index] += "□" * inicio
+                    layout[index] += "◌" * processo['tempo_de_chegada']
+                    layout[index] += "□" * (inicio - processo['tempo_de_chegada']+1)
 
                 else:
                     layout[index] += "□" * (inicio - processo['final'][i - 1])
@@ -64,7 +64,8 @@ def round_robin(processos_raw, quantum, sobrecarga):
             processo['inicio'] = []
             processo['final'] = []
 
-        escalonador_layout("Escalonador de Processos", layout, processos_raw, quantum, sobrecarga)
+        # escalonador_layout("Escalonador de Processos", layout, processos_raw, quantum, sobrecarga)
+        generate_layout([], layout, time_counter)
         return menu.main_menu(processos_raw, quantum, sobrecarga)
 
 
