@@ -7,10 +7,9 @@ from rich.align import Align
 
 def generate_table(processos) -> Panel:
     """Make a new table."""
-
     table = Table()
     table.add_column("process id")
-    table.add_column("value", overflow='fold')
+    table.add_column("value", overflow='fold', max_width=70)
     align_table = Align.center(table)
     for index, processo in enumerate(processos):
         table.add_row("proc "+str(index), processo)
@@ -32,5 +31,5 @@ def generate_layout(layout, processos, tempo_total) -> None:
             time.sleep(0.1)
             live.update(Align.center(generate_table(layout)))
             iterator += 1
-        time.sleep(7)
+        time.sleep(5)
         live.update(Align.center(generate_table([])))

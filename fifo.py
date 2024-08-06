@@ -12,7 +12,6 @@ def fifo(processos, quantum, sobrecarga):
         tempo_de_espera = 0
         for index, processo in enumerate(processos):
             if index == 0:
-                print("---------------------- INICIO FIFO ----------------------")
                 print(f"proc {index} " + (' '*(output_size - len(str(index)))) + (int(processo["tempo_de_execucao"]) * "■"))
             else:
                 tempo_de_espera += int(processos[index-1]["tempo_de_execucao"])
