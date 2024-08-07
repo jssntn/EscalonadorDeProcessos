@@ -1,7 +1,6 @@
 import menu
 import copy
 from operator import itemgetter
-from layout_escalonamento import escalonador_layout
 from live_layout import generate_layout
 
 
@@ -64,7 +63,6 @@ def round_robin(processos_raw, quantum, sobrecarga):
             processo['inicio'] = []
             processo['final'] = []
 
-        # escalonador_layout("Escalonador de Processos", layout, processos_raw, quantum, sobrecarga)
         generate_layout([], layout, time_counter)
         return menu.main_menu(processos_raw, quantum, sobrecarga)
 

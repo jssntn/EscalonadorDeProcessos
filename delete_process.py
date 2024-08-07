@@ -1,20 +1,21 @@
 import menu
 import time
+from func_layouts import show_all_process
+from rich.console import Console
+
+console = Console()
 
 
 def delete_process(processos, quantum, sobrecarga):
-    if len(processos) != 0:
-        for index, processo in enumerate(processos):
-            print('ID ' + str(index) + ':\n')
-            print('Chegada: ' + str(processo['tempo_de_chegada']))
-            print('Execução: ' + str(processo['tempo_de_execucao']))
-            print('Prioridade: ' + str(processo['deadline']))
+    try:
+        if len(processos) == 0:
+            raise Exception("Nenhum processo foi adicionado")
 
-        del_index = input('Insira o código do processo que deseja deletar: ')
-        del processos[int(del_index)]
-        return menu.main_menu(processos, quantum, sobrecarga)
+        console.print(show_all_process(processos))
+        process_id = input("Digite o id do processo que deseja deletar: ")
+        print("\033[A                             \033[A")
+        del processos[int(process_id)]
+        menu.main_menu(processos, quantum, sobrecarga)
 
-    else:
-        print("Não existem processos a serem excluídos")
-        time.sleep(10)
-        return menu.main_menu(processos, quantum, sobrecarga)
+    except Exception as e:
+        print(e)

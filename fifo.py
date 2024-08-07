@@ -1,5 +1,6 @@
 import menu
 from operator import itemgetter
+from live_layout import generate_layout
 
 
 def fifo(processos, quantum, sobrecarga):
@@ -9,12 +10,20 @@ def fifo(processos, quantum, sobrecarga):
     else:
         processos = sorted(processos, key=itemgetter('tempo_de_chegada'))
         output_size = len(str(len(processos)))
+        time_counter = processos[0]['tempo_de_chegada']
+        layout = []
         tempo_de_espera = 0
         for index, processo in enumerate(processos):
+            layout.append("")
             if index == 0:
-                print(f"proc {index} " + (' '*(output_size - len(str(index)))) + (int(processo["tempo_de_execucao"]) * "■"))
+                layout[index] += "◌" * processo['tempo_de_chegada']
+                layout[index] += "■" * int(processo["tempo_de_execucao"])
+                time_counter += processo['tempo_de_execucao']
             else:
-                tempo_de_espera += int(processos[index-1]["tempo_de_execucao"])
-                print(f"proc {index} " + (' '*(output_size - len(str(index)))) + ("□"*tempo_de_espera) + (int(processo["tempo_de_execucao"]) * "■"))
-        print("-----------------------------------------------\n")
+                layout[index] += "◌" * processo['tempo_de_chegada']
+                layout[index] += "□" * (time_counter - processo['tempo_de_chegada'])
+                layout[index] += "■" * processo['tempo_de_execucao']
+                time_counter += processo['tempo_de_execucao']
+
+        generate_layout([], layout, time_counter)
         return menu.main_menu(processos, quantum, sobrecarga)
