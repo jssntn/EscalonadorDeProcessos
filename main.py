@@ -1,10 +1,18 @@
 from menu import main_menu
+import subprocess
+
+def remove():
+    tput = subprocess.Popen(['tput', 'cols'], stdout=subprocess.PIPE)
+    cols = int(tput.communicate()[0].strip())
+    print("\033[A{}\033[A".format(' '*cols))
 
 
 def main():
     processos = []
-    quantum = input("Por favor, informe o quantum que será utilizado para a simulação\n")
-    sobrecarga = input("e qual seria a sobrecarga do sistema?\n")
+    quantum = input("Quantum: ")
+    remove()
+    sobrecarga = input("Sobrecarga: ")
+    remove()
 
     main_menu(processos, quantum, sobrecarga)
 

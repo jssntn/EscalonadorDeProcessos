@@ -31,5 +31,5 @@ def generate_layout(layout, processos, tempo_total) -> None:
             time.sleep(0.1)
             live.update(Align.center(generate_table(layout)))
             iterator += 1
-        time.sleep(30)
+        time.sleep(7)
         live.update(Align.center(generate_table([])))
