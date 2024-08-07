@@ -1,10 +1,5 @@
 from menu import main_menu
-import subprocess
-
-def remove():
-    tput = subprocess.Popen(['tput', 'cols'], stdout=subprocess.PIPE)
-    cols = int(tput.communicate()[0].strip())
-    print("\033[A{}\033[A".format(' '*cols))
+from func_layouts import remove
 
 
 def main():

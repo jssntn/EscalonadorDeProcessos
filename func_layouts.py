@@ -1,7 +1,13 @@
 from rich.table import Table
 from rich.console import Console
 from rich.align import Align
+import subprocess
 
+
+def remove():
+    tput = subprocess.Popen(['tput', 'cols'], stdout=subprocess.PIPE)
+    cols = int(tput.communicate()[0].strip())
+    print("\033[A{}\033[A".format(' '*cols))
 
 def show_all_process(processos):
     tables = []

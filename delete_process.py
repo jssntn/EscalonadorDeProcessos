@@ -1,6 +1,6 @@
 import menu
-import time
 from func_layouts import show_all_process
+from func_layouts import remove
 from rich.console import Console
 
 console = Console()
@@ -13,7 +13,7 @@ def delete_process(processos, quantum, sobrecarga):
 
         console.print(show_all_process(processos))
         process_id = input("Digite o id do processo que deseja deletar: ")
-        print("\033[A                             \033[A")
+        remove()
         del processos[int(process_id)]
         menu.main_menu(processos, quantum, sobrecarga)
 
