@@ -56,8 +56,8 @@ def sjf(processos_raw, quantum, sobrecarga):
                 # adiciona o tempo final na lista de finais
                 processos[processo_escolhido_index]['final'].append(time_counter)
             else:
-                # se nenhum processo tiver sido escolhido, quer dizer que não chegou processo, então o tempo passa
-                time_counter += 1
+                # se nenhum processo tiver sido escolhido, quer dizer que não chegou processo, então o tempo pula para o proximo tempo de chegada (pois a lista está ordenada)
+                time_counter = processos[numero_de_processos_processados]['tempo_de_chegada']
 
         # layout tá vazio
         layout = []
