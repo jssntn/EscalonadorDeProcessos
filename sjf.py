@@ -61,10 +61,14 @@ def sjf(processos_raw, quantum, sobrecarga):
 
         # layout tá vazio
         layout = []
+        turnAround = 0
         # para cada processo da lista
         for index, processo in enumerate(processos_raw):
             # adiciona "vazio" para a lista de layout ter o mesmo tamanho de processos e os indices serem alcançaveis
             layout.append("")
+            # inicia as variaveis de inicio do processo e de final do processo
+            inicio_do_processo = 0
+            final_do_processo = 0
             # para cada "inicio" de processo
             for i, inicio in enumerate(processo['inicio']):
                 # verifica se é a primeira iteração
@@ -72,6 +76,8 @@ def sjf(processos_raw, quantum, sobrecarga):
                     #adiciona no layout o tempo até o processo chegar e depois adiciona o tempo de espera (inicio - tempo de chegada + 1)
                     layout[index] += "◌" * processo['tempo_de_chegada']
                     layout[index] += "□" * (inicio - processo['tempo_de_chegada'])
+                    # coloca o primeiro inicio como o inicio_do_processo
+                    inicio_do_processo = inicio
 
                 else:
                     # se não for a primeira, adiciona no layout o tempo de espera
@@ -84,13 +90,17 @@ def sjf(processos_raw, quantum, sobrecarga):
                 else:
                     # se for a ultima iteração, coloca no layout só a execução
                     layout[index] += "■" * (processo['final'][i] - inicio)
-                    ''' 
-                    print("■" * (processo['final'][i] - inicio), end='') 
-                    '''
-
-            # define a lista de inicios e finais como vazio para não rodar de novo
+                     # coloca o ultimo final como o final_do_processo
+                    final_do_processo = processo['final'][i]
+           
+            # soma o tempo do processo (final - inicio) no turnaround
+            turnAround += final_do_processo - inicio_do_processo
+            # define a lista de inicios e finais como vazio para rodar zerado em um novo escalonamento
             processo['inicio'] = []
             processo['final'] = []
+
+        #divide o turnaround pelo numero de processos
+        turnAround = turnAround/numero_de_processos_processados
 
         generate_layout([], layout, time_counter)
         return menu.main_menu(processos_raw, quantum, sobrecarga)
