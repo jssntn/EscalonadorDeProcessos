@@ -76,8 +76,8 @@ def sjf(processos_raw, quantum, sobrecarga):
                     #adiciona no layout o tempo até o processo chegar e depois adiciona o tempo de espera (inicio - tempo de chegada + 1)
                     layout[index] += "◌" * processo['tempo_de_chegada']
                     layout[index] += "□" * (inicio - processo['tempo_de_chegada'])
-                    # coloca o primeiro inicio como o inicio_do_processo
-                    inicio_do_processo = inicio
+                    # coloca o primeiro inicio como o inicio_do_turnaround
+                    inicio_do_turnaround = processo['tempo_de_chegada']
 
                 else:
                     # se não for a primeira, adiciona no layout o tempo de espera
@@ -90,11 +90,11 @@ def sjf(processos_raw, quantum, sobrecarga):
                 else:
                     # se for a ultima iteração, coloca no layout só a execução
                     layout[index] += "■" * (processo['final'][i] - inicio)
-                     # coloca o ultimo final como o final_do_processo
-                    final_do_processo = processo['final'][i]
+                     # coloca o ultimo final como o final_do_turnaround
+                    final_do_turnaround = processo['final'][i]
            
             # soma o tempo do processo (final - inicio) no turnaround
-            turnAround += final_do_processo - inicio_do_processo
+            turnAround += final_do_turnaround - inicio_do_turnaround
             # define a lista de inicios e finais como vazio para rodar zerado em um novo escalonamento
             processo['inicio'] = []
             processo['final'] = []
@@ -102,6 +102,6 @@ def sjf(processos_raw, quantum, sobrecarga):
         #divide o turnaround pelo numero de processos
         turnAround = turnAround/numero_de_processos_processados
 
-        generate_layout([], layout, time_counter)
+        generate_layout([], layout, time_counter, turnAround)
         return menu.main_menu(processos_raw, quantum, sobrecarga)
 
