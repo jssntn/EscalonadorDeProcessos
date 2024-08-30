@@ -3,6 +3,7 @@ from rich.live import Live
 from rich.table import Table
 from rich.panel import Panel
 from rich.align import Align
+from rich.text import Text
 from pynput.keyboard import Key, Listener
 
 speed = 0.4
@@ -22,7 +23,7 @@ def on_press(key):
         print(e)
 
 
-def generate_table(processos) -> Panel:
+def generate_table(processos, turnaround) -> Panel:
     """Make a new table."""
     table = Table()
     table.add_column("process id")
@@ -32,15 +33,16 @@ def generate_table(processos) -> Panel:
         table.add_row("proc "+str(index), processo)
     panel = Panel(
         title='Processando: ■ Em espera: □ Sobrecarga: ◪',
+        subtitle='TurnAround: ' + str(turnaround),
         renderable=align_table,
         expand=False,)
     return panel
 
 
-def generate_layout(layout, processos, tempo_total) -> None:
+def generate_layout(layout, processos, tempo_total, turnAround) -> None:
     global speed
-    with Live(Align.center(generate_table(layout)), refresh_per_second=4, screen=True, vertical_overflow="visible", transient=True) as live:
-        panel = Panel('Processando: ■ \nEm espera: □\nSobrecarga: ◪', title="Live", border_style='bright_blue')
+    with Live(Align.center(generate_table(layout, turnAround)), refresh_per_second=4, screen=True, vertical_overflow="visible", transient=True) as live:
+        panel = Panel('Processando: ■ \nEm espera: □\nSobrecarga: ◪', title="Live", subtitle='TurnAround: ' + str(turnAround), border_style='bright_blue')
         iterator = 2
         for _ in range(tempo_total):
             layout = []
@@ -48,7 +50,7 @@ def generate_layout(layout, processos, tempo_total) -> None:
                 for processo in processos:
                     layout.append(processo[:iterator])
                 time.sleep(speed)
-                live.update(Align.center(generate_table(layout)))
+                live.update(Align.center(generate_table(layout, turnAround)))
                 iterator += 1
         time.sleep(7)
-        live.update(Align.center(generate_table([])))
+        live.update(Align.center(generate_table([], "")))
