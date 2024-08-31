@@ -8,14 +8,20 @@ console = Console()
 
 def edt_process(processos, quantum, sobrecarga):
 
-    console.print(show_all_process(processos))
+    try:
+        if len(processos) == 0:
+            raise Exception("Nenhum processo foi adicionado")
 
-    process_id = input("Digite o id do processo que deseja editar: ")
-    processos[int(process_id)]["tempo_de_chegada"] = int(input("Chegada: "))
-    remove()
-    processos[int(process_id)]["tempo_de_execucao"] = int(input("Tempo de execução: "))
-    remove()
-    processos[int(process_id)]["deadline"] = int(input("Deadline: "))
-    remove()
+        console.print(show_all_process(processos))
 
-    return menu.main_menu(processos, quantum, sobrecarga)
+        process_id = input("Digite o id do processo que deseja editar: ")
+        processos[int(process_id)]["tempo_de_chegada"] = int(input("Chegada: "))
+        remove()
+        processos[int(process_id)]["tempo_de_execucao"] = int(input("Tempo de execução: "))
+        remove()
+        processos[int(process_id)]["deadline"] = int(input("Deadline: "))
+        remove()
+
+        return menu.main_menu(processos, quantum, sobrecarga)
+    except Exception as e:
+        print(e)
